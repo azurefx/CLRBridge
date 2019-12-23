@@ -49,6 +49,17 @@ namespace CLRBridge
             return HandleTable.Set(handle, value);
         }
 
+        public static Handle PutChar(Handle handle, char value)
+        {
+            return HandleTable.Set(handle, value);
+        }
+
+        public static char GetChar(Handle handle)
+        {
+            var value = HandleTable.Get(handle);
+            return value is char ? (char)value : (char)0;
+        }
+
         public static Handle PutBool(Handle handle, byte value)
         {
             return HandleTable.Set(handle, value != 0);
