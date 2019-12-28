@@ -7,7 +7,7 @@ namespace CLRBridge
     static class HandleTable
     {
         static Dictionary<Handle, object> table = new Dictionary<Handle, object>();
-        public const long FreeStorageSize = 256;
+        public const long FreeStorageSize = 65536;
         static Handle nextKey = new Handle(FreeStorageSize + 1);
 
         public static Handle Add(object obj)

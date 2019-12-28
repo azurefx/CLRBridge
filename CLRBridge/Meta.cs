@@ -33,7 +33,7 @@ namespace CLRBridge
             return AddRef(type);
         }
 
-        public static Handle InvokeMember(Handle type, [MarshalAs(UnmanagedType.BStr)]string name, BindingFlags bindingFlags, Handle binder, Handle target, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)]Handle[] providedArgs, ulong argCount, out Handle exception)
+        public static Handle InvokeMember(Handle type, [MarshalAs(UnmanagedType.BStr)]string name, BindingFlags bindingFlags, Handle binder, Handle target, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 6)]Handle[] providedArgs, uint argCount, out Handle exception)
         {
             try
             {

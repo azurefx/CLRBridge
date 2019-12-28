@@ -6,9 +6,9 @@ namespace CLRBridge
     using Handle = IntPtr;
     public static class Primitive
     {
-        public static Handle AddRef(object obj)
+        internal static Handle AddRef(object obj)
         {
-            return HandleTable.Add(obj);
+            return HandleTable.Add(obj); 
         }
 
         public static bool Release(Handle handle)
@@ -16,7 +16,22 @@ namespace CLRBridge
             return HandleTable.Remove(handle);
         }
 
+        public static Handle Duplicate(Handle handle)
+        {
+            return AddRef(HandleTable.Get(handle));
+        }
+
 #pragma warning disable IDE0001
+        public static Handle CreateArray(uint argCount)
+        {
+            object[] array = new object[argCount];
+            for (uint i = 0; i < argCount; ++i)
+            {
+                array[i] = HandleTable.Get(new IntPtr(i + 1));
+            }
+            return AddRef(array);
+        }
+
         [return: MarshalAs(UnmanagedType.BStr)]
         public static string GetString(Handle handle)
         {
