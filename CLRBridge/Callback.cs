@@ -53,9 +53,15 @@ namespace CLRBridge
             var target = handler.Target == null ? null : Expression.Constant(handler.Target);
             var parametersObj = parameters.Select(parm => Expression.Convert(parm, typeof(object)));
             var call = Expression.Call(target, handler.Method, Expression.NewArrayInit(typeof(object), parametersObj));
-            ChangeTypeMethod method = Convert.ChangeType;
-            var changeType = Expression.Call(method.Method, call, Expression.Constant(invokeFun.ReturnType));
-            var body = invokeFun.ReturnType == typeof(void) ? (Expression)call : Expression.Convert(changeType, invokeFun.ReturnType);
+            var ret = Expression.Variable(typeof(object));
+            ChangeTypeMethod changeTypeMethod = Convert.ChangeType;
+            var typeCast = Expression.Block(new[] { ret },
+                Expression.Assign(ret, call),
+                Expression.Condition(Expression.TypeIs(ret, invokeFun.ReturnType),
+                    ret,
+                    Expression.Call(changeTypeMethod.Method, ret, Expression.Constant(invokeFun.ReturnType)))
+            );
+            var body = invokeFun.ReturnType == typeof(void) ? (Expression)call : Expression.Convert(typeCast, invokeFun.ReturnType);
             return Expression.Lambda(delegateType, body, parameters).Compile();
         }
     }
