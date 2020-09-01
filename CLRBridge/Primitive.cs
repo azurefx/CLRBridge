@@ -173,5 +173,27 @@ namespace CLRBridge
             var value = HandleTable.Get(handle);
             return value is ulong ? (ulong)value : 0;
         }
+
+        public static Handle PutFloat32(Handle handle, float value)
+        {
+            return HandleTable.Set(handle, value);
+        }
+
+        public static float GetFloat32(Handle handle)
+        {
+            var value = HandleTable.Get(handle);
+            return value is float ? (float)value : 0;
+        }
+
+        public static Handle PutFloat64(Handle handle, double value)
+        {
+            return HandleTable.Set(handle, value);
+        }
+
+        public static double GetFloat64(Handle handle)
+        {
+            var value = HandleTable.Get(handle);
+            return value is double ? (double)value : 0;
+        }
     }
 }
