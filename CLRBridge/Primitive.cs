@@ -195,5 +195,10 @@ namespace CLRBridge
             var value = HandleTable.Get(handle);
             return value is double ? (double)value : 0;
         }
+
+        public static Handle PutObject(Handle handle, Handle value)
+        {
+            return HandleTable.Set(handle, HandleTable.Get(value));
+        }
     }
 }

@@ -6,6 +6,8 @@ namespace CLRBridge
 {
     using Handle = IntPtr;
     using static CLRBridge.Primitive;
+    using System.Linq;
+
     public static class Meta
     {
         public static Handle GetType([MarshalAs(UnmanagedType.BStr)]string typeName, out Handle exception)
@@ -43,6 +45,7 @@ namespace CLRBridge
                 object[] providedArgsObj = Array.ConvertAll(providedArgs, HandleTable.Get);
                 object result = typeObj.InvokeMember(name, bindingFlags, binderObj, targetObj, providedArgsObj);
                 exception = Handle.Zero;
+                providedArgs.Zip(providedArgsObj, (h, o) => HandleTable.Set(h, o)).Count();
                 if (result != null)
                 {
                     return AddRef(result);
